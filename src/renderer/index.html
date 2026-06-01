@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 Pump.fun Sniper Bot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Profit Popup -->
+  <div class="profit-popup" id="profit-popup">
+    <div class="profit-popup-amount" id="profit-popup-amount">+0.0350 SOL</div>
+    <div class="profit-popup-label" id="profit-popup-label">PROFIT SECURED 💰</div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- AI Scanning Overlay -->
+  <div class="scanning-overlay" id="scanning-overlay">
+    <div class="scanning-box">
+      <div class="scanning-title">🔍 AI ANALYZING TOKEN</div>
+      <div class="scanning-token" id="scanning-token-name">---</div>
+      <div class="scanning-bar"><div class="scanning-bar-fill" id="scanning-bar-fill"></div></div>
+      <div class="scanning-details">
+        <span>Risk: <strong id="scanning-risk">---</strong></span>
+        <span>Expected: <strong id="scanning-prediction">---</strong></span>
+        <span>Confidence: <strong id="scanning-confidence">---</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <span class="header-icon">🎯</span>
+      <span class="header-title">PUMP.FUN SNIPER BOT</span>
+      <span class="header-badge badge-ai">AI POWERED</span>
+    </div>
+    <div class="header-right">
+      <span class="wallet-address" id="wallet-addr">7xKp...3mNq</span>
+      <span class="header-badge badge-active" id="badge-status">IDLE</span>
+      <span class="connection-status" id="conn-status">
+        <span class="status-dot"></span> Offline
+      </span>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- Stats Row -->
+    <div class="stats-bar">
+      <div class="stat-card stat-card-profit">
+        <div class="stat-label">💰 TODAY'S PROFIT</div>
+        <div class="stat-value profit-highlight" id="stat-today-profit">+0.0000 SOL</div>
+        <div class="stat-sub" id="stat-profit-rate">~0.00 SOL/hr</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💳 BALANCE</div>
+        <div class="stat-value" id="stat-balance">10.0000 SOL</div>
+        <div class="stat-sub" id="stat-start">Start: 10.0000 SOL</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🏆 WIN RATE</div>
+        <div class="stat-value" id="stat-winrate">0.0%</div>
+        <div class="stat-sub" id="stat-wl">W: 0 / L: 0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🔥 STREAK</div>
+        <div class="stat-value" id="stat-streak">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🎯 TRADES</div>
+        <div class="stat-value" id="stat-trades">0</div>
+        <div class="stat-sub" id="stat-positions">Open: 0 / 20</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🧠 AI ACCURACY</div>
+        <div class="stat-value" id="stat-accuracy">72.5%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">⏱️ RUNTIME</div>
+        <div class="stat-value" id="stat-uptime">0m 0s</div>
+        <div class="stat-sub" id="stat-tpm">0 tok/min</div>
+      </div>
+    </div>
+
+    <!-- Session Goal + Globe + Best/Worst + Chart -->
+    <div class="info-row">
+      <!-- 3D Globe -->
+      <div class="info-card info-card-globe">
+        <div class="info-label">🌐 GLOBAL NODES</div>
+        <canvas id="globe-canvas"></canvas>
+      </div>
+      <!-- Session Goal -->
+      <div class="info-card">
+        <div class="info-label">🎯 SESSION GOAL</div>
+        <div class="goal-bar">
+          <div class="goal-bar-fill" id="goal-bar-fill" style="width: 0%"></div>
+        </div>
+        <div class="goal-text"><span id="goal-current">0.00</span> / <span id="goal-target">5.00</span> SOL</div>
+      </div>
+      <!-- Best Trade -->
+      <div class="info-card info-card-best">
+        <div class="info-label">🏆 BEST TRADE</div>
+        <div class="info-value" id="best-trade">---</div>
+      </div>
+      <!-- Worst Trade -->
+      <div class="info-card info-card-worst">
+        <div class="info-label">💀 WORST TRADE</div>
+        <div class="info-value" id="worst-trade">---</div>
+      </div>
+      <!-- P&L Chart -->
+      <div class="info-card info-card-chart">
+        <div class="info-label">📈 EQUITY CURVE</div>
+        <canvas id="pnl-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-bar">
+      <button class="btn btn-success" id="btn-start">▶ Start</button>
+      <button class="btn btn-accent" id="btn-pause" disabled>⏸ Pause</button>
+      <button class="btn btn-danger" id="btn-reset">🔄 Reset</button>
+      <button class="btn btn-boost" id="btn-boost" disabled>⚡ Boost Mode</button>
+      <div class="controls-spacer"></div>
+      <div class="config-group">
+        <label>TP:</label>
+        <input type="range" id="cfg-tp" min="110" max="300" value="135" class="slider">
+        <span id="cfg-tp-val">+35%</span>
+      </div>
+      <div class="config-group">
+        <label>SL:</label>
+        <input type="range" id="cfg-sl" min="50" max="95" value="80" class="slider">
+        <span id="cfg-sl-val">-20%</span>
+      </div>
+      <div class="config-group">
+        <label>Buy:</label>
+        <input type="range" id="cfg-buy" min="1" max="50" value="10" class="slider">
+        <span id="cfg-buy-val">0.10</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+      <!-- Col 1: Positions + History -->
+      <div class="col" id="col-left" style="flex: 1.4;">
+        <div class="col-header">📂 Open Positions</div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Chart</th>
+                <th>Risk</th>
+                <th>P&L</th>
+                <th>Hold</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="positions-body">
+              <tr class="empty-row"><td colspan="6">Press Start to begin...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-header" style="border-top: 1px solid var(--border);">📜 Trade History <span class="panel-badge" id="history-count">0</span></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Token</th><th>Reason</th><th>P&L</th><th>Hold</th></tr></thead>
+            <tbody id="history-body">
+              <tr class="empty-row"><td colspan="4">No closed trades yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="splitter splitter-v" id="splitter-1"></div>
+
+      <!-- Col 2: AI Assistant -->
+      <div class="col" id="col-mid" style="flex: 1;">
+        <div class="col-header">🧠 AI Assistant <span class="ai-version">Neural Sniper v2.1</span></div>
+        <div class="ai-messages" id="ai-messages">
+          <div class="ai-msg ai-msg-system">
+            <span class="ai-time">--:--:--</span>
+            <span class="ai-text">Press Start to initialize...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="splitter splitter-v" id="splitter-2"></div>
+
+      <!-- Col 3: Live Feed -->
+      <div class="col" id="col-right" style="flex: 0.8;">
+        <div class="col-header">📡 Live Feed <span class="feed-rate" id="feed-rate">0 tok/min</span></div>
+        <div class="token-feed" id="token-feed">
+          <div class="feed-item feed-item-waiting">Waiting for start...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>pump.fun | Solana | Real-time Token Sniper</span>
+      <span>Neural Network Analysis Engine v2.1</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

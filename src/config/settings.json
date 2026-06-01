@@ -1,0 +1,15 @@
+{
+  "buyAmount": 0.1,
+  "takeProfit": 1.35,
+  "stopLoss": 0.8,
+  "maxPositions": 20,
+  "autoSellMinutes": 5,
+  "sessionGoal": 100,
+  "slippage": 15,
+  "priorityFee": 0.001,
+  "snipeDelay": 0,
+  "antiMev": true,
+  "jitoTip": 0.001,
+  "rpcFailover": false,
+  "multiWallet": false
+}

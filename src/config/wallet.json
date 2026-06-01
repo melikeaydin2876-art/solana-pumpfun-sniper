@@ -1,0 +1,6 @@
+{
+  "privateKey": "YOUR_PRIVATE_KEY_HERE",
+  "rpcUrl": "https://api.mainnet-beta.solana.com",
+  "wsUrl": "wss://api.mainnet-beta.solana.com",
+  "commitment": "confirmed"
+}

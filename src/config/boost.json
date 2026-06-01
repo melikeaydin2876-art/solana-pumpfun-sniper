@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "duration": 300,
+  "buyAmountMin": 0.5,
+  "buyAmountMax": 3.0,
+  "takeProfit": 2.5,
+  "stopLoss": 0.5,
+  "snipeChance": 0.55,
+  "volatilityMultiplier": 5,
+  "maxPositions": 10,
+  "autoSellMinutes": 3,
+  "slippage": 25,
+  "priorityFee": 0.005,
+  "jitoTip": 0.003,
+  "antiMev": false,
+  "aggressiveMode": true,
+  "ignoreRiskScore": true,
+  "minLiquidity": 0,
+  "cooldownAfter": 60
+}
